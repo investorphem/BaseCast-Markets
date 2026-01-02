@@ -1,41 +1,51 @@
 # BaseCast Markets 🧠📈
 
-BaseCast Markets is a decentralized prediction market protocol built natively on Base.
-Users can create and trade prediction markets on real-world and crypto-native events.
+BaseCast Markets is a decentralized prediction & forecast market protocol built natively on Base.
+Users can create, trade, and resolve YES/NO markets on crypto, tech, and social events.
+
+This project is designed for the **Base Builder Challenge** with heavy on-chain interaction,
+real economic logic, and Base-native UX.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 - Permissionless market creation
 - On-chain YES / NO trading
-- Oracle-resolved outcomes
+- Oracle-based resolution
 - Trustless payouts
-- Low-fee Base transactions
+- Low gas fees (Base)
+- Builder-friendly architecture
 
 ---
 
-## 🧱 Smart Contracts
-- MarketFactory.sol – creates markets
-- PredictionMarket.sol – handles trading and settlement
+## 🧱 Architecture
+- MarketFactory deploys PredictionMarket instances
+- Users buy YES/NO shares using ETH
+- Oracle resolves outcome after expiry
+- Winners claim payouts on-chain
 
 ---
 
-## ⚙️ Tech Stack
-- Solidity + Hardhat
-- Base Mainnet / Sepolia
-- Next.js 14
+## 🛠 Tech Stack
+**Smart Contracts**
+- Solidity ^0.8.20
+- Hardhat
+- Base Sepolia / Mainnet
+
+**Frontend**
+- Next.js 14 (App Router)
 - TailwindCSS
-- OnchainKit
-- Coinbase Smart Wallet
+- wagmi + viem
+- Coinbase Smart Wallet ready
 
 ---
 
-## 🧪 Local Development
+## 🚀 Local Development
 
-### Contracts
+### 1️⃣ Contracts
 ```bash
 cd contracts
 npm install
+cp .env.example .env
 npx hardhat compile
-npx hardhat node
 npx hardhat run scripts/deploy.ts --network base-sepolia
