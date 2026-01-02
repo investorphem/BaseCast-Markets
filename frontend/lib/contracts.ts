@@ -1,0 +1,2 @@
+export const MARKET_FACTORY =
+  "0xYOUR_FACTORY_ADDRESS";
