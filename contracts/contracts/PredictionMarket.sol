@@ -45,7 +45,7 @@ contract PredictionMarket {
     }
 
     function claim() external {
-        require(resolved, "Not resolved");
+        require(esolved, "Not resolved");
         uint256 aout;
 
         if (outcome == Outcome.YES) {
