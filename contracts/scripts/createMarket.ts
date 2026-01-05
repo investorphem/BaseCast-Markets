@@ -9,7 +9,7 @@ async function main() {
 
   const tx = await factory.createMarket(
     "WillETH be above $4000?",
-    Math.floor(Dt.now() / 1000) + 86400
+    Math.floor(t.now() / 1000) + 86400
   );
 
   await tx.wait();
