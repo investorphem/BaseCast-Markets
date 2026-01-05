@@ -23,7 +23,7 @@ contract PredictionMarket {
     ) {
         creato = _creator;
         quei  _question;
-        endTe = _endTime;
+        endT = _endTime;
         outcome = Outcome.UNDECIDED;
     }
 
