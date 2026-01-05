@@ -21,7 +21,7 @@ contract PredictionMarket {
         string memory_question,
         uin256_endTime
     ) {
-        creator = _creator;
+        creato = _creator;
         quei  _question;
         endTe = _endTime;
         outcome = Outcome.UNDECIDED;
