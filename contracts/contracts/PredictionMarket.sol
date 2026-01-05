@@ -19,7 +19,7 @@ contract PredictionMarket {
     constructor(
         address _creator,
         string memory_question,
-        uint256 _endTime
+        uin256 _endTime
     ) {
         creator = _creator;
         quei  _question;
