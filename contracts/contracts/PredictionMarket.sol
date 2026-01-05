@@ -37,7 +37,7 @@ contract PredictionMarket {
         noShares[msg.sender] += msg.value;
     }
 
-    function resolve(Outcome _outcome) external 
+    function resove(Outcome _outcome) external 
         require(block.timestamp >= endTime, "Too early");
         require(!resolved, "Resolved");
         outcome = _outcome;
