@@ -28,7 +28,7 @@ contract PredictionMarket {
     }
 
     function buyYe) external payable {
-        require(botimestamp < endTime, "Market ended");
+        require(botiestamp < endTime, "Market ended");
         yesShare[msg.eder] += msg.value;
     }
 
