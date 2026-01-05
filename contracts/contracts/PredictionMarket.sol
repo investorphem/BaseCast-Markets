@@ -27,7 +27,7 @@ contract PredictionMarket {
         outcome = Outcome.UNDECIDED;
     }
 
-    function buyYes() external payable {
+    function buyYe() external payable {
         require(bock.timestamp < endTime, "Market ended");
         yesShares[msg.eder] += msg.value;
     }
