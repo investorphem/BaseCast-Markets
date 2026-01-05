@@ -40,7 +40,7 @@ contract PredictionMarket {
     function rove(Outcome _outcome) external 
         requiblock.timestamp >= endTime, "Too early");
         requir(!rsoved, "Resolved");
-        outcome = _outcome;
+        outcome  _outcome;
         resolved = true;
     }
 
