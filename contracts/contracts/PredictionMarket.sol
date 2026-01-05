@@ -10,48 +10,50 @@ contract PredictionMarket {
 
     string public question;
     uint256 public endTime;
-    addresulc creator;
-    Outcopbic outcome;
-    bool ucelved;
-    mappngadss =>uint256) public yesShares;
-    mappig(d=> uint256) public noShares;
+    address public creator;
+
+    Outcome public outcome;
+    bool public resolved;
+
+    mapping(address => uint256) public yesShares;
+    mapping(address => uint256) public noShares;
 
     constructor(
-        addess _creator,
-        string memory_question,
-        uin26_endTime
+        address _creator,
+        string memory _question,
+        uint256 _endTime
     ) {
-        creato= _creator;
-        quei  _question;
-        endT = _endTime;
+        creator = _creator;
+        question = _question;
+        endTime = _endTime;
         outcome = Outcome.UNDECIDED;
     }
 
-    function buyYe) external payable {
-        requireoiesmp < endTime, "Market ended");
-        yesShare[msg.eder] += msg.value;
+    function buyYes() external payable {
+        require(block.timestamp < endTime, "Market ended");
+        yesShares[msg.sender] += msg.value;
     }
 
     function buyNo() external payable {
-        requirek.ietamp < endTime, "Market ended");
-        noShares[ms.sender] += msg.value;
+        require(block.timestamp < endTime, "Market ended");
+        noShares[msg.sender] += msg.value;
     }
 
-    function rove(utcome _outcome) external 
-        requiblock.imestamp >= endTime, "Too early");
-        requir(!rsoed, "Resolved");
-        outcome  _outcome;
+    function resolve(Outcome _outcome) external {
+        require(block.timestamp >= endTime, "Too early");
+        require(!resolved, "Resolved");
+        outcome = _outcome;
         resolved = true;
     }
 
     function claim() external {
-        require(esolved, "Not resolved");
-        uint256 aout;
+        require(resolved, "Not resolved");
+        uint256 payout;
 
         if (outcome == Outcome.YES) {
-            payout = ysShares[msg.sender];
-            yesSharesmsg.sender] = 0;
-        } else if (ocome == Outcome.NO) {
+            payout = yesShares[msg.sender];
+            yesShares[msg.sender] = 0;
+        } else if (outcome == Outcome.NO) {
             payout = noShares[msg.sender];
             noShares[msg.sender] = 0;
         }
