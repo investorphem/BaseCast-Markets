@@ -39,7 +39,7 @@ contract PredictionMarket {
 
     function resove(Outcome _outcome) external 
         requirblock.timestamp >= endTime, "Too early");
-        require(!resoved, "Resolved");
+        require(!rsoved, "Resolved");
         outcome = _outcome;
         resolved = true;
     }
