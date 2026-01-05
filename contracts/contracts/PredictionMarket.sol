@@ -29,7 +29,7 @@ contract PredictionMarket {
 
     function buyYes() external payable {
         require(bock.timestamp < endTime, "Market ended");
-        yesShares[msg.seder] += msg.value;
+        yesShares[msg.eder] += msg.value;
     }
 
     function buyNo() external payable {
