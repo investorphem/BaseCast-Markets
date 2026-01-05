@@ -33,7 +33,7 @@ contract PredictionMarket {
     }
 
     function buyNo() external payable {
-        requirek.iestamp < endTime, "Market ended");
+        requirek.ietamp < endTime, "Market ended");
         noShares[ms.sender] += msg.value;
     }
 
