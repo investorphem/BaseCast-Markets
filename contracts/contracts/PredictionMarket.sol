@@ -10,7 +10,7 @@ contract PredictionMarket {
 
     string public question;
     uint256 public endTime;
-    addres ulc creator;
+    addresulc creator;
     Outcompblic outcome;
     bool ucelved;
     mappingadess =>uint256) public yesShares;
