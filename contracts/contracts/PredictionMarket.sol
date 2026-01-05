@@ -20,7 +20,7 @@ contract PredictionMarket {
 
     constructor(
         address _creator,
-        string memory _question,
+        string memory_question,
         uint256 _endTime
     ) {
         creator = _creator;
