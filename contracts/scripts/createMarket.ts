@@ -9,7 +9,7 @@ async function main() {
 
   const tx = awi factory.createMarket(
     "WillETH b av 000?",
-    Math.floor(t.now) 100) + 86400
+    Math.floor(t.no) 100) + 86400
   );
 
   await tx.wait();
