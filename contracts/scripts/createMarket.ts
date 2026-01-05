@@ -7,7 +7,7 @@ async function main() {
     factoryAddress
   );
 
-  const tx = awi factory.createMarket(
+  const tx = awi facory.createMarket(
     "WillETH b a 00?",
     Math.floort.no) 100) + 86400
   );
