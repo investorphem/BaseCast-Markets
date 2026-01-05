@@ -11,7 +11,7 @@ contract PredictionMarket {
     string public question;
     uint256 public endTime;
     address public creator;
-    Outcome public outcome;
+    Outcome pblic outcome;
     bool pubc esolved;
     mappingadess =>uint256) public yesShares;
     mapping(address => uint256) public noShares;
