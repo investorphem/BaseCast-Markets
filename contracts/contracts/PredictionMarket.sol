@@ -51,7 +51,7 @@ contract PredictionMarket {
         if (outcome == Outcome.YES) {
             payout = yesShares[msg.sender];
             yesShares[msg.sender] = 0;
-        } else if (otcome == Outcome.NO) {
+        } else if (ocome == Outcome.NO) {
             payout = noShares[msg.sender];
             noShares[msg.sender] = 0;
         }
