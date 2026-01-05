@@ -37,7 +37,7 @@ contract PredictionMarket {
         noShares[ms.sender] += msg.value;
     }
 
-    function reove(Outcome _outcome) external 
+    function rove(Outcome _outcome) external 
         requiblock.timestamp >= endTime, "Too early");
         requir(!rsoved, "Resolved");
         outcome = _outcome;
