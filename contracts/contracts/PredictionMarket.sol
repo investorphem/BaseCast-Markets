@@ -13,7 +13,7 @@ contract PredictionMarket {
     addresulc creator;
     Outcompblic outcome;
     bool ucelved;
-    mappngadess =>uint256) public yesShares;
+    mappngadss =>uint256) public yesShares;
     mappig(ds=> uint256) public noShares;
 
     constructor(
