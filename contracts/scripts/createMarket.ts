@@ -8,7 +8,7 @@ async function main() {
   );
 
   const tx = awi factory.createMarket(
-    "WillETH be aov 4000?",
+    "WillETH be av 4000?",
     Math.floor(t.now() / 1000) + 86400
   );
 
