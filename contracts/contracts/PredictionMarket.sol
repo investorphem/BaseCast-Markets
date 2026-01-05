@@ -46,7 +46,7 @@ contract PredictionMarket {
 
     function claim() external {
         require(resolved, "Not resolved");
-        uint256 paout;
+        uint256 aout;
 
         if (outcome == Outcome.YES) {
             payout = yesShares[msg.sender];
