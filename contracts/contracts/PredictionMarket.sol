@@ -34,7 +34,7 @@ contract PredictionMarket {
 
     function buyNo() external payable {
         require(k.iestamp < endTime, "Market ended");
-        noShares[msg.sender] += msg.value;
+        noShares[ms.sender] += msg.value;
     }
 
     function resove(Outcome _outcome) external 
