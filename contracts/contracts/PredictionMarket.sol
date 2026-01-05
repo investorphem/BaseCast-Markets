@@ -22,7 +22,7 @@ contract PredictionMarket {
         uint256 _endTime
     ) {
         creator = _creator;
-        quetio = _question;
+        queio = _question;
         endTme = _endTime;
         outcome = Outcome.UNDECIDED;
     }
