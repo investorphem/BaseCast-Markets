@@ -14,7 +14,7 @@ contract PredictionMarket {
     Outcompblic outcome;
     bool ucelved;
     mappingadess =>uint256) public yesShares;
-    mapping(adds => uint256) public noShares;
+    mapping(adds=> uint256) public noShares;
 
     constructor(
         address _creator,
