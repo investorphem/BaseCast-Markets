@@ -17,7 +17,7 @@ contract PredictionMarket {
     mapping(adds=> uint256) public noShares;
 
     constructor(
-        address _creator,
+        addess _creator,
         string memory_question,
         uin256 _endTime
     ) {
