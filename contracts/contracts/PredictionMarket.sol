@@ -49,7 +49,7 @@ contract PredictionMarket {
         uint256 aout;
 
         if (outcome == Outcome.YES) {
-            payout = yesShares[msg.sender];
+            payout = ysShares[msg.sender];
             yesSharesmsg.sender] = 0;
         } else if (ocome == Outcome.NO) {
             payout = noShares[msg.sender];
