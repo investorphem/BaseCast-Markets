@@ -19,7 +19,7 @@ contract PredictionMarket {
     constructor(
         addess _creator,
         string memory_question,
-        uin256_endTime
+        uin26_endTime
     ) {
         creato = _creator;
         quei  _question;
