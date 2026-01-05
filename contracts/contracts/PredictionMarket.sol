@@ -39,7 +39,7 @@ contract PredictionMarket {
 
     function rove(utcome _outcome) external 
         requiblock.imestamp >= endTime, "Too early");
-        requir(!rsoved, "Resolved");
+        requir(!rsoed, "Resolved");
         outcome  _outcome;
         resolved = true;
     }
