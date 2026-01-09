@@ -17,6 +17,12 @@ contract PredictionMarket {
 
     mapping(address => uint256) public yesShares;
     mapping(address => uint256) public noShares;
+    
+    // Market statistics tracking
+    uint256 public totalYesVolume;
+    uint256 public totalNoVolume;
+    uint256 public totalParticipants;
+    mapping(address => bool) public hasParticipated;
 
     // Bulk operations tracking
     uint256 public constant MAX_BULK_BUYS = 10;
@@ -48,11 +54,21 @@ contract PredictionMarket {
     function buyYes() external payable {
         require(block.timestamp < endTime, "Market ended");
         yesShares[msg.sender] += msg.value;
+        totalYesVolume += msg.value;
+        if (!hasParticipated[msg.sender]) {
+            hasParticipated[msg.sender] = true;
+            totalParticipants++;
+        }
     }
 
     function buyNo() external payable {
         require(block.timestamp < endTime, "Market ended");
         noShares[msg.sender] += msg.value;
+        totalNoVolume += msg.value;
+        if (!hasParticipated[msg.sender]) {
+            hasParticipated[msg.sender] = true;
+            totalParticipants++;
+        }
     }
 
     function resolve(Outcome _outcome) external {
@@ -78,12 +94,6 @@ contract PredictionMarket {
         payable(msg.sender).transfer(payout);
     }
 
-    /*//////////////////////////////////////////////////////////////
-                           BULK OPERATIONS
-    //////////////////////////////////////////////////////////////*/
-
-    /// @notice Bulk purchase YES shares in multiple markets
-    /// @param amounts Array of ETH amounts to buy YES shares with (up to 10 purchases)
     function bulkBuyYes(uint256[] calldata amounts) external payable {
         uint256 totalPurchases = amounts.length;
         require(totalPurchases > 0 && totalPurchases <= MAX_BULK_BUYS, "Invalid bulk buy count");
@@ -100,12 +110,9 @@ contract PredictionMarket {
         }
 
         require(msg.value == totalAmount, "Incorrect total payment");
-
         emit BulkSharesPurchased(msg.sender, true, totalAmount, totalShares);
     }
 
-    /// @notice Bulk purchase NO shares in multiple markets
-    /// @param amounts Array of ETH amounts to buy NO shares with (up to 10 purchases)
     function bulkBuyNo(uint256[] calldata amounts) external payable {
         uint256 totalPurchases = amounts.length;
         require(totalPurchases > 0 && totalPurchases <= MAX_BULK_BUYS, "Invalid bulk buy count");
@@ -122,12 +129,9 @@ contract PredictionMarket {
         }
 
         require(msg.value == totalAmount, "Incorrect total payment");
-
         emit BulkSharesPurchased(msg.sender, false, totalAmount, totalShares);
     }
 
-    /// @notice Bulk purchase mixed YES/NO shares
-    /// @param purchases Array of purchase data (up to 10 purchases)
     struct BulkPurchase {
         bool isYes;
         uint256 amount;
@@ -153,37 +157,25 @@ contract PredictionMarket {
                 noShares[msg.sender] += purchase.amount;
                 totalNoShares += purchase.amount;
             }
-
             totalAmount += purchase.amount;
         }
 
         require(msg.value == totalAmount, "Incorrect total payment");
-
-        // Emit separate events for YES and NO purchases
-        if (totalYesShares > 0) {
-            emit BulkSharesPurchased(msg.sender, true, totalYesShares, totalYesShares);
-        }
-        if (totalNoShares > 0) {
-            emit BulkSharesPurchased(msg.sender, false, totalNoShares, totalNoShares);
-        }
+        if (totalYesShares > 0) emit BulkSharesPurchased(msg.sender, true, totalYesShares, totalYesShares);
+        if (totalNoShares > 0) emit BulkSharesPurchased(msg.sender, false, totalNoShares, totalNoShares);
     }
 
-    /// @notice Bulk claim payouts from multiple resolved markets
-    /// @dev This function would be called on multiple market contracts
-    /// @param claimAmounts Array of claim amounts to process (up to 15 claims)
     function bulkClaim(uint256[] calldata claimAmounts) external {
         require(resolved, "Market not resolved");
         uint256 totalClaims = claimAmounts.length;
         require(totalClaims > 0 && totalClaims <= MAX_BULK_CLAIMS, "Invalid bulk claim count");
 
         uint256 totalPayout = 0;
-
         for (uint256 i = 0; i < totalClaims; i++) {
             uint256 claimAmount = claimAmounts[i];
             require(claimAmount > 0, "Zero claim amount");
 
             uint256 availablePayout = 0;
-
             if (outcome == Outcome.YES) {
                 require(yesShares[msg.sender] >= claimAmount, "Insufficient YES shares");
                 availablePayout = claimAmount;
@@ -193,100 +185,49 @@ contract PredictionMarket {
                 availablePayout = claimAmount;
                 noShares[msg.sender] -= claimAmount;
             }
-
             require(availablePayout > 0, "No payout available");
             totalPayout += availablePayout;
         }
-
         require(totalPayout > 0, "Nothing to claim");
-
-        // Transfer total payout
         payable(msg.sender).transfer(totalPayout);
-
         emit BulkClaimsProcessed(msg.sender, totalPayout);
     }
 
-    /// @notice Get bulk operation limits
-    /// @return maxBulkBuys Maximum bulk purchases per transaction
-    /// @return maxBulkClaims Maximum bulk claims per transaction
     function getBulkLimits() external pure returns (uint256 maxBulkBuys, uint256 maxBulkClaims) {
         return (MAX_BULK_BUYS, MAX_BULK_CLAIMS);
     }
 
-    /// @notice Estimate gas for bulk operations
-    /// @param operationCount Number of operations
-    /// @param operationType 0=buy, 1=claim
-    /// @return estimatedGas Approximate gas cost
-    function estimateBulkGas(uint256 operationCount, uint256 operationType)
-        external
-        pure
-        returns (uint256 estimatedGas)
-    {
+    function estimateBulkGas(uint256 operationCount, uint256 operationType) external pure returns (uint256) {
         require(operationCount > 0, "Invalid count");
-
         uint256 baseGas = 21000;
         uint256 perOperationGas;
-
         if (operationType == 0) {
-            // Buy operations
-            perOperationGas = operationCount <= MAX_BULK_BUYS ? 45000 : 55000;
+            perOperationGas = 45000;
             require(operationCount <= MAX_BULK_BUYS, "Too many buys");
         } else if (operationType == 1) {
-            // Claim operations
             perOperationGas = 35000;
             require(operationCount <= MAX_BULK_CLAIMS, "Too many claims");
         } else {
             revert("Invalid operation type");
         }
-
         return baseGas + (perOperationGas * operationCount);
     }
 
-    /// @notice Get user's total shares and potential payout
-    /// @param user User address to check
-    /// @return yesSharesOwned YES shares owned
-    /// @return noSharesOwned NO shares owned
-    /// @return potentialPayout Potential payout if market resolves
-    function getUserPosition(address user)
-        external
-        view
-        returns (uint256 yesSharesOwned, uint256 noSharesOwned, uint256 potentialPayout)
-    {
-        yesSharesOwned = yesShares[user];
-        noSharesOwned = noShares[user];
-
+    function getUserPosition(address user) external view returns (uint256, uint256, uint256) {
+        uint256 yesSharesOwned = yesShares[user];
+        uint256 noSharesOwned = noShares[user];
+        uint256 potentialPayout = 0;
         if (resolved) {
-            if (outcome == Outcome.YES) {
-                potentialPayout = yesSharesOwned;
-            } else if (outcome == Outcome.NO) {
-                potentialPayout = noSharesOwned;
-            }
+            if (outcome == Outcome.YES) potentialPayout = yesSharesOwned;
+            else if (outcome == Outcome.NO) potentialPayout = noSharesOwned;
         } else {
-            // If not resolved, show total investment
             potentialPayout = yesSharesOwned + noSharesOwned;
         }
+        return (yesSharesOwned, noSharesOwned, potentialPayout);
     }
 
-    /// @notice Get market statistics
-    /// @return totalYesVolume Total YES shares purchased
-    /// @return totalNoVolume Total NO shares purchased
-    /// @return totalParticipants Total unique participants
-    /// @return timeRemaining Seconds until market ends (0 if ended)
-    function getMarketStats()
-        external
-        view
-        returns (uint256 totalYesVolume, uint256 totalNoVolume, uint256 totalParticipants, uint256 timeRemaining)
-    {
-        // Note: In a real implementation, you'd track total volumes and participants
-        // For this demo, we'll return placeholder values
-        totalYesVolume = 0; // Would need to track this
-        totalNoVolume = 0;  // Would need to track this
-        totalParticipants = 0; // Would need to track this
-
-        if (block.timestamp < endTime) {
-            timeRemaining = endTime - block.timestamp;
-        } else {
-            timeRemaining = 0;
-        }
+    function getMarketStats() external view returns (uint256, uint256, uint256, uint256) {
+        uint256 timeRemaining = block.timestamp < endTime ? endTime - block.timestamp : 0;
+        return (totalYesVolume, totalNoVolume, totalParticipants, timeRemaining);
     }
 }
