@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  basecast-dev:
+    build: .
+    container_name: basecast-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/contracts/node_modules
+      - /app/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+
+  # Optional: Add a service for running contract tests in isolation
+  basecast-test:
+    build: .
+    container_name: basecast-test
+    volumes:
+      - .:/app
+    working_dir: /app/contracts
+    command: npx hardhat test
+    profiles:
+      - test
