@@ -11,6 +11,9 @@ real economic logic, and Base-native UX.
 ## ✨ Features
 - Permissionless market creation
 - On-chain YES / NO trading
+- **Bulk Share Purchasing**: Buy up to 10 YES/NO positions in one transaction
+- **Bulk Claim Processing**: Claim payouts from up to 15 resolved markets
+- **Mixed Position Buying**: Combine YES/NO purchases in single transaction
 - Oracle-based resolution
 - Trustless payouts
 - Low gas fees (Base)
