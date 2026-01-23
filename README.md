@@ -52,3 +52,4 @@ npm install
 cp .env.example .env
 npx hardhat compile
 npx hardhat run scripts/deploy.ts --network base-sepolia
+<!-- Improved documentation -->
