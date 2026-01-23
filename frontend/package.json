@@ -1,6 +1,7 @@
 {
   "name": "basecast-frontend",
   "private": true,
+  "homepage": "https://github.com/AdekunleBamz/BaseCast-Markets",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
