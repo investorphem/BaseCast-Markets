@@ -18,7 +18,7 @@ real economic logic, and Base-native UX.
 - Trustless payouts
 - Low gas fees (Base)
 - Builder-friendly architecture
-
+- 🔥 Real-time market updates
 ---
 
 ## 🧱 Architecture
